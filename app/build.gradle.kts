@@ -33,7 +33,11 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.iconsExtended)
     implementation(libs.logback.android)
     implementation(libs.slf4j.api)
-
+    implementation(libs.destinations.core)
+    ksp(libs.destinations.ksp)
+    implementation(libs.destinations.bottom.sheet)
+    implementation(libs.process.phoenix)
 }

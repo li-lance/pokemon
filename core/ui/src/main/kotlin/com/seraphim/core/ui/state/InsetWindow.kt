@@ -6,7 +6,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 
 fun Window.edgeToEdgeWindowInsetsControllerCompat(
     isLightStatusBar: Boolean = true,
-    isLightNavigationBar: Boolean = true
+    isLightNavigationBar: Boolean = true,
 ) {
     // 设置窗口为边到边模式
     WindowCompat.setDecorFitsSystemWindows(this, false)
@@ -16,3 +16,4 @@ fun Window.edgeToEdgeWindowInsetsControllerCompat(
     insetsController.isAppearanceLightStatusBars = isLightStatusBar
     insetsController.isAppearanceLightNavigationBars = isLightNavigationBar
 }
+

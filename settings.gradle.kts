@@ -23,7 +23,7 @@ dependencyResolutionManagement {
 rootProject.name = "pokemon"
 include(":app")
 include(":shared")
-include(":core:ui")
+include(":core:ui",":core:permission")
 include(":domain:scaffold:ui")
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
