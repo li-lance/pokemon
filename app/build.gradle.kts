@@ -32,6 +32,7 @@ dependencies {
     implementation(project(":shared"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.material3)
     implementation(libs.logback.android)
     implementation(libs.slf4j.api)
 
