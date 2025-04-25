@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.seraphim.android.application.compose)
     alias(libs.plugins.seraphim.android.application.jacoco)
 //    alias(libs.plugins.seraphim.android.application.firebase)
-    alias(libs.plugins.seraphim.hilt)
+    alias(libs.plugins.seraphim.koin)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.kotlin.serialization)
@@ -28,7 +28,11 @@ android {
     namespace = "com.seraphim.pokemon"
 }
 dependencies {
+    implementation(project(":core:ui"))
+    implementation(project(":shared"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(project(":core:ui"))
+    implementation(libs.logback.android)
+    implementation(libs.slf4j.api)
+
 }

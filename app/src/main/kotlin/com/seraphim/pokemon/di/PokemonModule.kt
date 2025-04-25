@@ -1,0 +1,9 @@
+package com.seraphim.pokemon.di
+
+import com.seraphim.pokemon.MainViewModel
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.module
+
+val pokemonModule = module {
+    viewModelOf(::MainViewModel)
+}

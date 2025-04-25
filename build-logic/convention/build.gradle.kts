@@ -76,6 +76,10 @@ gradlePlugin {
             id = libs.plugins.seraphim.hilt.get().pluginId
             implementationClass = "HiltConventionPlugin"
         }
+        register("koin"){
+            id = libs.plugins.seraphim.koin.get().pluginId
+            implementationClass = "KoinConventionPlugin"
+        }
         register("androidRoom") {
             id = libs.plugins.seraphim.android.room.get().pluginId
             implementationClass = "AndroidRoomConventionPlugin"

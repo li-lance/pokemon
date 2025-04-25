@@ -21,7 +21,6 @@ class OpenApiGeneratorConventionPlugin : Plugin<Project> {
                     mapOf(
                         "dateLibrary" to "kotlinx-datetime",
                         "library" to "multiplatform",
-                        "serializationLibrary" to "kotlinx_serialization"
                     )
                 )
             }
