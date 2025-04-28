@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
-
 plugins {
     alias(libs.plugins.seraphim.kotlin.multiplatform.library)
     alias(libs.plugins.seraphim.openapi.generator)
@@ -17,14 +15,6 @@ kotlin {
         all {
             languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
         }
-        targets.all {
-            compilations.all {
-                kotlinOptions {
-                    freeCompilerArgs += "-Xexpect-actual-classes"
-                }
-
-            }
-        }
         commonMain {
             dependencies {
                 implementation(libs.kotlinx.coroutines.core)
@@ -39,6 +29,8 @@ kotlin {
                 implementation(libs.room.runtime)
                 implementation(libs.sqlite.bundled)
                 implementation(libs.slf4j.api)
+                implementation(libs.androidx.paging.common)
+
             }
             kotlin.srcDir("build/openapi/src/main/kotlin")
         }

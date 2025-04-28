@@ -34,7 +34,7 @@ androidxWork = "2.10.1"
 coil = "2.7.0"
 destinationsVersion = "2.1.0"
 dependencyGuard = "0.5.0"
-firebaseBom = "33.12.0"
+firebaseBom = "33.13.0"
 firebaseCrashlyticsPlugin = "3.0.3"
 firebasePerfPlugin = "1.4.2"
 gmsPlugin = "4.4.2"
@@ -52,6 +52,7 @@ ksp = "2.1.10-1.0.31"
 logbackAndroid = "3.0.0"
 moduleGraph = "2.7.1"
 okhttp = "4.12.0"
+paging = "3.3.6"
 processPhoenix = "3.0.0"
 protobuf = "4.29.2"
 protobufPlugin = "0.9.4"
@@ -114,6 +115,10 @@ androidx-lint-gradle = { group = "androidx.lint", name = "lint-gradle", version.
 androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", version.ref = "androidxMetrics" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }

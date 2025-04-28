@@ -1,5 +1,6 @@
 package com.seraphim.shared.di
 
+import com.seraphim.shared.repository.PokemonPagingSource
 import com.seraphim.shared.repository.PokemonRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -33,6 +34,7 @@ val sharedAndroidModule = module {
         }
     }
     single { PokemonRepository(get(), get()) }
+    single { PokemonPagingSource(get(), get()) }
     single { Factory(get()).createRoomDatabase() }
 
 }

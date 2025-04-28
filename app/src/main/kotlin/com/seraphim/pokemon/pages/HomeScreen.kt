@@ -1,7 +1,6 @@
 package com.seraphim.pokemon.pages
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -11,11 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,12 +21,10 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,21 +34,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.palette.graphics.Palette
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
-import coil.compose.AsyncImagePainter.Companion.DefaultTransform
-import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.seraphim.core.ui.topbar.SeraphimTopBar
-import com.seraphim.pokemon.PokemonModel
+import com.seraphim.pokemon.PokemonViewModel
 import com.seraphim.pokemon.ui.theme.PokemonTheme
 import com.seraphim.shared.model.Pokemon
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 @Destination<RootGraph>(start = true)
@@ -109,8 +102,9 @@ fun ClearableTextField() {
 }
 
 @Composable
-fun PokemonFeature(viewModel: PokemonModel = koinViewModel()) {
-    val pokemonList by viewModel.pokemonList.collectAsStateWithLifecycle()
+fun PokemonFeature(viewModel: PokemonViewModel = koinViewModel()) {
+    val pokemonItems: LazyPagingItems<Pokemon> =
+        viewModel.pokemonPagingFlow.collectAsLazyPagingItems()
     Text(
         "Pokemon Feature",
         modifier = Modifier
@@ -123,8 +117,11 @@ fun PokemonFeature(viewModel: PokemonModel = koinViewModel()) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2), modifier = Modifier.padding(16.dp)
     ) {
-        items(pokemonList) { pokemon ->
-            PokemonCard(pokemon)
+        items(pokemonItems.itemCount) { index ->
+            val pokemon = pokemonItems[index]
+            pokemon?.let {
+                PokemonCard(pokemon)
+            }
         }
     }
 }

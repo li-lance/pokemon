@@ -18,4 +18,7 @@ interface PokemonDao {
 
     @Delete
     suspend fun deletePokemon(pokemon: Pokemon)
+
+    @Query("SELECT * FROM Pokemon LIMIT :limit OFFSET :offset")
+    fun getPokemonsByPage(offset: Int, limit: Int): Flow<List<Pokemon>>
 }

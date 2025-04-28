@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.androidx.compose.material.iconsExtended)
     implementation(libs.koin.androidx.compose)
     implementation(libs.coil.kt.compose)
+    implementation(libs.androidx.paging.compose)
     implementation(libs.logback.android)
     implementation(libs.slf4j.api)
     implementation(libs.destinations.core)
@@ -43,4 +44,12 @@ dependencies {
     ksp(libs.destinations.ksp)
     implementation(libs.destinations.bottom.sheet)
     implementation(libs.process.phoenix)
+}
+baselineProfile {
+    // Don't build on every iteration of a full assemble.
+    // Instead enable generation directly for the release build variant.
+    automaticGenerationDuringBuild = false
+
+    // Make use of Dex Layout Optimizations via Startup Profiles
+    dexLayoutOptimization = true
 }

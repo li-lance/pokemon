@@ -20,5 +20,8 @@ internal fun Project.configureKotlinMultiplatform() {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib")
             }
         }
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
     }
 }
