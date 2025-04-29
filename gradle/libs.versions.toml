@@ -73,6 +73,7 @@ koin = "4.0.4"
 koinAnnotations = "2.0.0"
 napier = "2.7.1"
 paletteKtx = "1.0.0"
+skie = "0.10.1"
 
 
 [bundles]
@@ -238,7 +239,7 @@ room = { id = "androidx.room", version.ref = "room" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 openapi-generator = { id = "org.openapi.generator", version.ref = "openapi" }
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
-
+skie = { id = "co.touchlab.skie", version.ref = "skie" }
 #KMP
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 # Plugins defined by this project
