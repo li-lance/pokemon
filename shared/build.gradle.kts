@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.skie)
+//    alias(libs.plugins.skie)
 }
 android {
     namespace = "com.seraphim.shared"

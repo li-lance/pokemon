@@ -43,6 +43,8 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.PokemonDetailScreenDestination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.seraphim.core.ui.topbar.SeraphimTopBar
 import com.seraphim.pokemon.PokemonViewModel
 import com.seraphim.pokemon.ui.theme.PokemonTheme
@@ -51,7 +53,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Destination<RootGraph>(start = true)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navigator: DestinationsNavigator) {
     Column(modifier = Modifier.fillMaxSize()) {
         SeraphimTopBar("Pokemon")
         Row(
@@ -71,7 +73,7 @@ fun HomeScreen() {
                 modifier = Modifier.weight(1f)
             )
         }
-        PokemonFeature()
+        PokemonFeature(navigator)
     }
 }
 
@@ -102,7 +104,10 @@ fun ClearableTextField() {
 }
 
 @Composable
-fun PokemonFeature(viewModel: PokemonViewModel = koinViewModel()) {
+fun PokemonFeature(
+    navigator: DestinationsNavigator,
+    viewModel: PokemonViewModel = koinViewModel()
+) {
     val pokemonItems: LazyPagingItems<Pokemon> =
         viewModel.pokemonPagingFlow.collectAsLazyPagingItems()
     Text(
@@ -120,7 +125,7 @@ fun PokemonFeature(viewModel: PokemonViewModel = koinViewModel()) {
         items(pokemonItems.itemCount) { index ->
             val pokemon = pokemonItems[index]
             pokemon?.let {
-                PokemonCard(pokemon)
+                PokemonCard(pokemon, navigator)
             }
         }
     }
@@ -128,12 +133,15 @@ fun PokemonFeature(viewModel: PokemonViewModel = koinViewModel()) {
 
 
 @Composable
-fun PokemonCard(pokemon: Pokemon) {
+fun PokemonCard(pokemon: Pokemon, navigator: DestinationsNavigator) {
     var backgroundColor by remember { mutableStateOf(Color.White) }
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                navigator.navigate(PokemonDetailScreenDestination(pokemon.getImageUrl()))
+            },
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
         Column(
@@ -166,10 +174,11 @@ fun PokemonCard(pokemon: Pokemon) {
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
     PokemonTheme {
-        HomeScreen()
+//        HomeScreen()
     }
 }

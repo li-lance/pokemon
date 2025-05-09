@@ -27,6 +27,6 @@ fun ProfileScreen() {
 @Composable
 fun ProfileScreenPreview() {
     PokemonTheme {
-        HomeScreen()
+        ProfileScreen()
     }
 }
