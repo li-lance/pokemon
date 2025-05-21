@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import com.seraphim.shared.model.Resource
 import com.seraphim.shared.repository.PokemonPagingSource
 import com.seraphim.shared.repository.PokemonRepository
+import kotlinx.coroutines.flow.collectLatest
 
 class PokemonViewModel(
     private val repository: PokemonRepository,
@@ -19,4 +21,19 @@ class PokemonViewModel(
         ),
         pagingSourceFactory = { pagingSource }
     ).flow.cachedIn(viewModelScope)
+
+    suspend fun getPokemonDetail(name: String) {
+
+        repository.getPokemonDetail(name).collectLatest {
+            when (it) {
+                is Resource.Success -> {
+                    // Handle success
+                }
+
+                is Resource.Failed -> {
+                    // Handle failure
+                }
+            }
+        }
+    }
 }

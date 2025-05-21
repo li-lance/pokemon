@@ -4,10 +4,13 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import androidx.room.TypeConverters
 import com.seraphim.shared.model.Pokemon
+import com.seraphim.shared.model.PokemonInfo
 
-@Database(entities = [Pokemon::class], version = 1)
+@Database(entities = [Pokemon::class, PokemonInfo::class], version = 3)
 @ConstructedBy(AppDatabaseConstructor::class)
+@TypeConverters(value = [TypeResponseConverter::class, StatsResponseConverter::class])
 abstract class AppDatabase: RoomDatabase() {
     abstract fun pokemonDao(): PokemonDao
 }

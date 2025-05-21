@@ -7,7 +7,7 @@ import com.seraphim.shared.model.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
@@ -16,8 +16,13 @@ abstract class NetworkBoundRepository<RESULT, REQUEST : Any> {
     fun asFlow() = flow<Resource<RESULT>> {
 
         // Emit Database content first
-        emit(Resource.Success(fetchFromLocal().first()))
-
+        val localData = fetchFromLocal().firstOrNull()
+        if (localData is Collection<*> && localData.isNotEmpty()) {
+            emit(Resource.Success(localData))
+        }
+        if (localData != null && localData !is Collection<*>) {
+            emit(Resource.Success(localData))
+        }
         val apiResponse = fetchFromRemote()
 
         // Parse body

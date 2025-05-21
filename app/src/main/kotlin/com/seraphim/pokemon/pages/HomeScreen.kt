@@ -1,10 +1,16 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.seraphim.pokemon.pages
 
 import android.graphics.Bitmap
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -118,14 +124,17 @@ fun PokemonFeature(
         textAlign = TextAlign.Start,
         style = MaterialTheme.typography.labelMedium
     )
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2), modifier = Modifier.padding(16.dp)
-    ) {
-        items(pokemonItems.itemCount) { index ->
-            val pokemon = pokemonItems[index]
-            pokemon?.let {
-                PokemonCard(pokemon, navigator)
+    SharedTransitionLayout {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2), modifier = Modifier.padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp), // 设置列之间的水平间隔
+            verticalArrangement = Arrangement.spacedBy(8.dp) // 设置行之间的垂直间隔
+        ) {
+            items(pokemonItems.itemCount) { index ->
+                val pokemon = pokemonItems[index]
+                pokemon?.let {
+                    PokemonCard(pokemon, navigator)
+                }
             }
         }
     }
@@ -133,14 +142,17 @@ fun PokemonFeature(
 
 
 @Composable
-fun PokemonCard(pokemon: Pokemon, navigator: DestinationsNavigator) {
+fun PokemonCard(
+    pokemon: Pokemon,
+    navigator: DestinationsNavigator?,
+) {
     var backgroundColor by remember { mutableStateOf(Color.White) }
     Card(
         modifier = Modifier
-            .padding(8.dp)
             .fillMaxWidth()
+            .aspectRatio(1f)
             .clickable {
-                navigator.navigate(PokemonDetailScreenDestination(pokemon.getImageUrl()))
+                navigator?.navigate(PokemonDetailScreenDestination(pokemon))
             },
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
@@ -148,30 +160,38 @@ fun PokemonCard(pokemon: Pokemon, navigator: DestinationsNavigator) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(16.dp)
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(pokemon.getImageUrl())
-                    .diskCachePolicy(CachePolicy.ENABLED) // 启用磁盘缓存
-                    .networkCachePolicy(CachePolicy.ENABLED) // 启用网络缓存
-                    .build(),
-                transform = { state ->
-                    if (state is AsyncImagePainter.State.Success) {
-                        val drawable = state.result.drawable
-                        val bitmap = drawable.toBitmap().copy(Bitmap.Config.ARGB_8888, true)
-                        val palette = Palette.from(bitmap).generate()
-                        backgroundColor = Color(palette.getDominantColor(Color.White.toArgb()))
-                    }
-                    state
-                },
-                contentDescription = pokemon.name,
-                modifier = Modifier.fillMaxWidth(),
-            )
+            TransformImage(pokemon.getImageUrl(), pokemon.name) {
+                backgroundColor = it
+            }
             Text(
                 text = pokemon.name,
                 modifier = Modifier.padding(top = 8.dp)
             )
         }
     }
+}
+
+@Composable
+fun TransformImage(url: String, name: String, backgroundColor: (color: Color) -> Unit) {
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(url)
+            .diskCachePolicy(CachePolicy.ENABLED) // 启用磁盘缓存
+            .networkCachePolicy(CachePolicy.ENABLED) // 启用网络缓存
+            .build(),
+        transform = { state ->
+            if (state is AsyncImagePainter.State.Success) {
+                val drawable = state.result.drawable
+                val bitmap = drawable.toBitmap().copy(Bitmap.Config.ARGB_8888, true)
+                val palette = Palette.from(bitmap).generate()
+                backgroundColor.invoke(Color(palette.getDominantColor(Color.White.toArgb())))
+            }
+            state
+        },
+        contentDescription = name,
+        modifier = Modifier.fillMaxWidth()
+
+    )
 }
 
 

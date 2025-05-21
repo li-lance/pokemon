@@ -23,6 +23,7 @@ dependencyResolutionManagement {
 rootProject.name = "pokemon"
 include(":app")
 include(":shared")
+include(":utils")
 include(":core:ui",":core:permission")
 include(":domain:scaffold:ui")
 
