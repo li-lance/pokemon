@@ -19,14 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
 import com.seraphim.pokemon.PokemonViewModel
 import com.seraphim.pokemon.ui.theme.PokemonShape
 import com.seraphim.shared.model.Pokemon
 import org.koin.androidx.compose.koinViewModel
 
-@Destination<RootGraph>
 @Composable
 fun PokemonDetailScreen(
     pokemon: Pokemon

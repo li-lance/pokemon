@@ -47,19 +47,16 @@ import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.destinations.PokemonDetailScreenDestination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.seraphim.core.ui.topbar.SeraphimTopBar
+import com.seraphim.pokemon.PokemonDetailRoute
 import com.seraphim.pokemon.PokemonViewModel
+import com.seraphim.pokemon.TopLevelBackStack
 import com.seraphim.pokemon.ui.theme.PokemonTheme
 import com.seraphim.shared.model.Pokemon
 import org.koin.androidx.compose.koinViewModel
 
-@Destination<RootGraph>(start = true)
 @Composable
-fun HomeScreen(navigator: DestinationsNavigator) {
+fun HomeScreen(navigator: TopLevelBackStack<Any>) {
     Column(modifier = Modifier.fillMaxSize()) {
         SeraphimTopBar("Pokemon")
         Row(
@@ -111,7 +108,7 @@ fun ClearableTextField() {
 
 @Composable
 fun PokemonFeature(
-    navigator: DestinationsNavigator,
+    topLevelBackStack: TopLevelBackStack<Any>,
     viewModel: PokemonViewModel = koinViewModel()
 ) {
     val pokemonItems: LazyPagingItems<Pokemon> =
@@ -133,7 +130,7 @@ fun PokemonFeature(
             items(pokemonItems.itemCount) { index ->
                 val pokemon = pokemonItems[index]
                 pokemon?.let {
-                    PokemonCard(pokemon, navigator)
+                    PokemonCard(pokemon, topLevelBackStack)
                 }
             }
         }
@@ -144,7 +141,7 @@ fun PokemonFeature(
 @Composable
 fun PokemonCard(
     pokemon: Pokemon,
-    navigator: DestinationsNavigator?,
+    topLevelBackStack: TopLevelBackStack<Any>?,
 ) {
     var backgroundColor by remember { mutableStateOf(Color.White) }
     Card(
@@ -152,7 +149,7 @@ fun PokemonCard(
             .fillMaxWidth()
             .aspectRatio(1f)
             .clickable {
-                navigator?.navigate(PokemonDetailScreenDestination(pokemon))
+                topLevelBackStack?.add(PokemonDetailRoute(pokemon))
             },
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {

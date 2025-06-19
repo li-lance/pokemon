@@ -25,7 +25,7 @@ class PokemonRepository(private val api: PokemonApi, private val dao: PokemonDao
             }
 
             override suspend fun fetchFromRemote(): HttpResponse<PokemonDetail> {
-                return api.pokemonRetrieve(name)
+                return api.apiV2PokemonRetrieve(name)
             }
         }.asFlow()
     }

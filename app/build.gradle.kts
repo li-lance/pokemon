@@ -40,10 +40,14 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     implementation(libs.logback.android)
     implementation(libs.slf4j.api)
-    implementation(libs.destinations.core)
     implementation(libs.androidx.palette.ktx)
     ksp(libs.destinations.ksp)
-    implementation(libs.destinations.bottom.sheet)
+//    implementation(libs.destinations.core)
+//    implementation(libs.destinations.bottom.sheet)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+
     implementation(libs.process.phoenix)
 }
 baselineProfile {

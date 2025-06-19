@@ -6,13 +6,9 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.ramcosta.composedestinations.navigation.require
-import com.ramcosta.composedestinations.scope.DestinationScope
-import com.ramcosta.composedestinations.wrapper.DestinationWrapper
 
 data class SharedTransitionData(
     val animatedVisibilityScope: AnimatedVisibilityScope,
@@ -48,22 +44,22 @@ fun Modifier.sharedTransitionScope(
     }
 }
 
-object SharedTransitionDataWrapper : DestinationWrapper {
-    @Composable
-    override fun <T> DestinationScope<T>.Wrap(screenContent: @Composable () -> Unit) {
-        val sharedTransitionScope = buildDependencies().require<SharedTransitionScope>()
-        val sharedTransitionData = remember {
-            (this as? AnimatedVisibilityScope)?.let {
-                SharedTransitionData(
-                    animatedVisibilityScope = it,
-                    sharedTransitionScope = sharedTransitionScope
-                )
-            }
-        }
-        CompositionLocalProvider(
-            LocalSharedTransitionData provides sharedTransitionData
-        ) {
-            screenContent()
-        }
-    }
-}
+//object SharedTransitionDataWrapper : DestinationWrapper {
+//    @Composable
+//    override fun <T> DestinationScope<T>.Wrap(screenContent: @Composable () -> Unit) {
+//        val sharedTransitionScope = buildDependencies().require<SharedTransitionScope>()
+//        val sharedTransitionData = remember {
+//            (this as? AnimatedVisibilityScope)?.let {
+//                SharedTransitionData(
+//                    animatedVisibilityScope = it,
+//                    sharedTransitionScope = sharedTransitionScope
+//                )
+//            }
+//        }
+//        CompositionLocalProvider(
+//            LocalSharedTransitionData provides sharedTransitionData
+//        ) {
+//            screenContent()
+//        }
+//    }
+//}

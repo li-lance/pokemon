@@ -40,7 +40,7 @@ class PokemonPagingSource(
                     }
 
                     override suspend fun fetchFromRemote(): HttpResponse<PaginatedPokemonSummaryList> {
-                        return api.pokemonList(limit = limit, offset = page * limit)
+                        return api.apiV2PokemonList(limit = limit, offset = page * limit)
                     }
                 }
 
