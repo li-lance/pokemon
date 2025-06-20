@@ -29,6 +29,10 @@ class PokemonRepository(private val api: PokemonApi, private val dao: PokemonDao
             }
         }.asFlow()
     }
+
+    fun createPokemonPagingSource(): PokemonPagingSource {
+        return PokemonPagingSource(api, dao)
+    }
 }
 
 fun PokemonDetail.toPokemonInfo(): PokemonInfo {

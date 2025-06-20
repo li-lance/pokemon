@@ -34,7 +34,6 @@ val sharedAndroidModule = module {
         }
     }
     single { PokemonRepository(get(), get()) }
-    single { PokemonPagingSource(get(), get()) }
     single { Factory(get()).createRoomDatabase() }
 
 }

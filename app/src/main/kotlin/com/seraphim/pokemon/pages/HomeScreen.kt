@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.palette.graphics.Palette
@@ -47,6 +48,7 @@ import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.seraphim.core.ui.list.PullToRefreshBox
 import com.seraphim.core.ui.topbar.SeraphimTopBar
 import com.seraphim.pokemon.PokemonDetailRoute
 import com.seraphim.pokemon.PokemonViewModel
@@ -113,6 +115,8 @@ fun PokemonFeature(
 ) {
     val pokemonItems: LazyPagingItems<Pokemon> =
         viewModel.pokemonPagingFlow.collectAsLazyPagingItems()
+    val refreshing = pokemonItems.loadState.refresh is LoadState.Loading
+
     Text(
         "Pokemon Feature",
         modifier = Modifier
@@ -121,7 +125,7 @@ fun PokemonFeature(
         textAlign = TextAlign.Start,
         style = MaterialTheme.typography.labelMedium
     )
-    SharedTransitionLayout {
+    PullToRefreshBox(isRefreshing = refreshing, onRefresh = { pokemonItems.refresh() }) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2), modifier = Modifier.padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp), // 设置列之间的水平间隔

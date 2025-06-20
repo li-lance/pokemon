@@ -6,20 +6,18 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.seraphim.shared.model.Resource
-import com.seraphim.shared.repository.PokemonPagingSource
 import com.seraphim.shared.repository.PokemonRepository
 import kotlinx.coroutines.flow.collectLatest
 
 class PokemonViewModel(
-    private val repository: PokemonRepository,
-    private val pagingSource: PokemonPagingSource
+    private val repository: PokemonRepository
 ) : ViewModel() {
     val pokemonPagingFlow = Pager(
         config = PagingConfig(
             pageSize = 20,
             enablePlaceholders = false
         ),
-        pagingSourceFactory = { pagingSource }
+        pagingSourceFactory = { repository.createPokemonPagingSource() }
     ).flow.cachedIn(viewModelScope)
 
     suspend fun getPokemonDetail(name: String) {

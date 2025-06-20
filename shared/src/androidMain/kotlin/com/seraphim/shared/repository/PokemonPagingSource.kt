@@ -42,10 +42,10 @@ class PokemonPagingSource(
                     override suspend fun fetchFromRemote(): HttpResponse<PaginatedPokemonSummaryList> {
                         return api.apiV2PokemonList(limit = limit, offset = page * limit)
                     }
-                }
+                }.asFlow(forceRemote = true)
 
             val data: List<Pokemon> =
-                (repository.asFlow().first() as Resource.Success<List<Pokemon>>).data
+                (repository.first() as Resource.Success<List<Pokemon>>).data
             LoadResult.Page(
                 data = data,
                 prevKey = if (page == 0) null else page - 1,

@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 android {
+    namespace = "com.seraphim.pokemon"
     defaultConfig {
         applicationId = "com.seraphim.pokemon"
         versionCode = 8
@@ -20,12 +21,18 @@ android {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
+    kotlinOptions {
+        freeCompilerArgs +=
+            listOf(
+                "-opt-in=com.google.accompanist.pager.ExperimentalPagerApi",
+                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            )
+    }
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
         }
     }
-    namespace = "com.seraphim.pokemon"
 }
 dependencies {
     implementation(project(":core:ui"))

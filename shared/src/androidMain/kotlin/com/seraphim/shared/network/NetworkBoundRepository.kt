@@ -13,34 +13,43 @@ import kotlinx.coroutines.flow.map
 
 abstract class NetworkBoundRepository<RESULT, REQUEST : Any> {
 
-    fun asFlow() = flow<Resource<RESULT>> {
-
-        // Emit Database content first
-        val localData = fetchFromLocal().firstOrNull()
-        if (localData is Collection<*> && localData.isNotEmpty()) {
-            emit(Resource.Success(localData))
-        }
-        if (localData != null && localData !is Collection<*>) {
-            emit(Resource.Success(localData))
-        }
-        val apiResponse = fetchFromRemote()
-
-        // Parse body
-        val remoteData = apiResponse.body()
-
-        // Check for response validation
-        if (apiResponse.success) {
-            saveRemoteData(remoteData)
-        } else {
-            // Something went wrong! Emit Error state.
-            emit(Resource.Failed(apiResponse.toString()))
-        }
-
-        emitAll(
-            fetchFromLocal().map {
-                Resource.Success<RESULT>(it)
+    fun asFlow(forceRemote: Boolean = false) = flow<Resource<RESULT>> {
+        if (forceRemote) {
+            // 先请求接口，保存到本地，再 emit 本地数据
+            val apiResponse = fetchFromRemote()
+            val remoteData = apiResponse.body()
+            if (apiResponse.success) {
+                saveRemoteData(remoteData)
+            } else {
+                emit(Resource.Failed(apiResponse.toString()))
             }
-        )
+            emitAll(
+                fetchFromLocal().map {
+                    Resource.Success<RESULT>(it)
+                }
+            )
+        } else {
+            // 原有逻辑：先 emit 本地，再请求接口，再 emit 本地
+            val localData = fetchFromLocal().firstOrNull()
+            if (localData is Collection<*> && localData.isNotEmpty()) {
+                emit(Resource.Success(localData))
+            }
+            if (localData != null && localData !is Collection<*>) {
+                emit(Resource.Success(localData))
+            }
+            val apiResponse = fetchFromRemote()
+            val remoteData = apiResponse.body()
+            if (apiResponse.success) {
+                saveRemoteData(remoteData)
+            } else {
+                emit(Resource.Failed(apiResponse.toString()))
+            }
+            emitAll(
+                fetchFromLocal().map {
+                    Resource.Success<RESULT>(it)
+                }
+            )
+        }
     }.catch { e ->
         e.printStackTrace()
         emit(Resource.Failed("Network error!"))
